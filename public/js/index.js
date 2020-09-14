@@ -9,7 +9,7 @@ let crate, crateMaterial, crateTexture, crateNormalMap, crateBumpMap;
 
 // Store keyboard inputs to check during animate loop
 let keyboard = {};
-let player = { height:1.8, speed: 0.1 , turnSpeed: Math.PI*0.02}
+let player = { height:1.8, speed: 0.05 , turnSpeed: Math.PI*0.01}
 
 var camera = new THREE.PerspectiveCamera(
     // FOV (field of view)
