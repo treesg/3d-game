@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/treesg/3d-game/issues"
   },
-  "homepage": "https://github.com/treesg/3d-game#readme"
+  "homepage": "https://github.com/treesg/3d-game#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
