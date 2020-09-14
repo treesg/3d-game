@@ -5,6 +5,8 @@ import * as THREE from './three.module.js';
 let scene = new THREE.Scene();
 let meshFloor;
 
+let crate, crateMaterial, crateTexture, crateNormalMap, crateBumpMap;
+
 // Store keyboard inputs to check during animate loop
 let keyboard = {};
 let player = { height:1.8, speed: 0.1 , turnSpeed: Math.PI*0.02}
@@ -20,10 +22,14 @@ var camera = new THREE.PerspectiveCamera(
     1000
 );
 
+// Color correction https://discoverthreejs.com/tips-and-tricks/
+const floorMaterial = new THREE.MeshPhongMaterial({color:0x1b1b1b});
+floorMaterial.color.convertSRGBToLinear();
+
 meshFloor = new THREE.Mesh(
     // Add segments to geometry with extra parameters (2,2)
-    new THREE.PlaneGeometry(10,10, 2,2), 
-    new THREE.MeshPhongMaterial({color:0x1b1b1b, wireframe:false})
+    new THREE.PlaneGeometry(20,20, 2,2), 
+    floorMaterial
 );
 meshFloor.rotation.x -= Math.PI/2;
 meshFloor.receiveShadow = true;
@@ -49,7 +55,7 @@ const textureLoader = new THREE.TextureLoader();
 // Load a texture. See the note in chapter 4 on working locally, or the page
 // https://threejs.org/docs/#manual/introduction/How-to-run-things-locally
 // if you run into problems here
-const texture = textureLoader.load( './js/textures/tostadora.png' );
+const texture = textureLoader.load( './js/textures/possgineer.jpg' );
 
 // Set the "color space" of the texture
 texture.encoding = THREE.sRGBEncoding;
@@ -90,6 +96,26 @@ frankmesh.rotation.set(2, 2, 2);
 
 scene.add(frankmesh);
 boxes.push(frankmesh);
+
+crateTexture = textureLoader.load('./js/textures/crate1/crate1_diffuse.png');
+crateBumpMap = textureLoader.load('./js/textures/crate1/crate1_bump.png');
+crateNormalMap = textureLoader.load('./js/textures/crate1/crate1_normal.png');
+crateTexture.encoding = THREE.sRGBEncoding;
+crateTexture.anisotropy = 16;
+crateMaterial = new THREE.MeshPhongMaterial( {
+    color: 0xffffff,
+    map: crateTexture,
+    bumpMap: crateBumpMap,
+    normalMap: crateNormalMap
+  } );
+crate = new THREE.Mesh(
+    new THREE.BoxGeometry(3, 3, 3),
+    crateMaterial
+);
+crate.position.set(-2.5, 3/2, 2.5);
+crate.receiveShadow = true;
+crate.castShadow = true;
+scene.add(crate)
 
 // Move up the camera based on height
 camera.position.set(0, player.height, 5);
